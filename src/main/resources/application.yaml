@@ -1,0 +1,67 @@
+spring:
+  application:
+    name: llm-gateway
+server:
+  port: 8080
+
+  cache:
+    type: redis  # fallback to simple if redis not available
+    redis:
+      time-to-live: 600000  # 10 min
+  redis:
+    host: localhost
+    port: 6379
+
+llm:
+  provider: openai   # openai, azure, huggingface
+  openai:
+    api-key: ${OPENAI_API_KEY}
+    model: gpt-3.5-turbo
+    base-url: https://api.openai.com/v1
+    max-tokens: 500
+    temperature: 0.7
+  azure:
+    api-key: ${AZURE_OPENAI_API_KEY}
+    endpoint: ${AZURE_OPENAI_ENDPOINT}
+    deployment: gpt-35-turbo
+    api-version: 2023-12-01-preview
+  huggingface:
+    api-key: ${HUGGINGFACE_API_KEY}
+    model: mistralai/Mistral-7B-Instruct-v0.1
+    base-url: https://api-inference.huggingface.co/models
+
+resilience4j:
+  ratelimiter:
+    instances:
+      llm-gateway:
+        limit-for-period: 10
+        limit-refresh-period: 1s
+        timeout-duration: 0
+  retry:
+    instances:
+      llm-gateway:
+        max-attempts: 3
+        wait-duration: 2s
+        retry-exceptions:
+          - java.io.IOException
+          - com.example.llmgateway.exception.LlmProviderException
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.example.llmgateway: DEBUG
+    org.springframework.web.reactive: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
