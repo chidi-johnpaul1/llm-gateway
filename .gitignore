@@ -1,41 +1,86 @@
+# =========================================
+# Spring Boot / Maven
+# =========================================
 HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
 
+# Keep Maven wrapper files
+!.mvn/wrapper/maven-wrapper.jar
+
+# =========================================
+# Environment & Secrets
+# =========================================
+.env
+.env.*
+!.env.example
+
+# Local Spring configuration
+application-local.properties
+application-local.yml
+application-secret.properties
+application-secret.yml
+
+# Private keys and certificates
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# =========================================
+# Logs
+# =========================================
+*.log
+logs/
+
+# =========================================
+# IntelliJ IDEA
+# =========================================
 .idea/
 *.iml
-.env
-*.log
-.DS_Store
+*.iws
+*.ipr
 
-### STS ###
+# =========================================
+# Eclipse / Spring Tool Suite
+# =========================================
 .apt_generated
 .classpath
 .factorypath
 .project
-.settings
+.settings/
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
+# =========================================
+# NetBeans
+# =========================================
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
+
+# =========================================
+# Build
+# =========================================
 build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-
-
-### VS Code ###
+# =========================================
+# VS Code
+# =========================================
 .vscode/
+
+# =========================================
+# macOS
+# =========================================
+.DS_Store
+
+# =========================================
+# Temporary files
+# =========================================
+*.swp
+*.swo
+*~
